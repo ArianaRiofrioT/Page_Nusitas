@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muro de los Deseos ✨</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            background: #050508; 
+            color: #ffffff; overflow: hidden; height: 100vh; width: 100vw;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* --- FONDO DE GALAXIA (CSS PURO) --- */
+        #particles-js {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #1b2735 0%, #050508 100%);
+            z-index: 1;
+        }
+
+        /* --- CAPA DE DESEOS FLOTANTES --- */
+        #universo-deseos {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none;
+        }
+
+        .deseo-flotante {
+            position: absolute; color: white;
+            font-size: 1em; white-space: nowrap; font-style: italic;
+            text-shadow: 0 0 8px #8a2be2, 0 0 15px #00ff80;
+            animation: viajar linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes viajar {
+            0% { transform: scale(0.5) translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: scale(1.5) translate(var(--moveX), var(--moveY)); opacity: 0; }
+        }
+
+        /* --- INTERFAZ DE USUARIO --- */
+        .ui-container {
+            position: relative; z-index: 10; margin-top: 60px;
+            text-align: center; width: 90%; max-width: 450px;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 30px; border-radius: 25px;
+            border: 1px solid rgba(0, 255, 128, 0.3);
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .btn-volver { position: fixed; top: 25px; left: 25px; color: #00ff80; text-decoration: none; font-size: 2.5em; z-index: 20; transition: 0.3s; }
+        .btn-volver:hover { color: #8a2be2; transform: scale(1.2); }
+
+        h1 { color: #00ff80; text-shadow: 0 0 15px rgba(0, 255, 128, 0.6); margin-bottom: 20px; font-size: 2em; }
+
+        textarea {
+            width: 100%; height: 90px; background: rgba(255, 255, 255, 0.05); border: none;
+            color: white; border-bottom: 2px solid #8a2be2; outline: none;
+            resize: none; text-align: center; font-size: 1.1em; padding: 10px;
+        }
+
+        .btn-lanzar {
+            margin-top: 20px; background: #8a2be2; color: white; border: none;
+            padding: 12px 35px; border-radius: 30px; cursor: pointer; font-weight: bold;
+            font-size: 1.1em; transition: 0.3s; box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+        .btn-lanzar:hover { background: #00ff80; color: #000; box-shadow: 0 0 25px #00ff80; transform: translateY(-3px); }
+
+        /* Panel Admin */
+        .ver-lista { margin-top: 15px; font-size: 0.8em; color: #666; cursor: pointer; text-decoration: underline; }
+        #admin-panel {
+            display: none; background: rgba(0,0,0,0.85); margin-top:15px; padding:15px; 
+            border-radius:15px; max-height: 200px; overflow-y: auto; text-align: left;
+            border: 1px solid #333;
+        }
+        .admin-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.9em; }
+        .btn-del { color: #ff4d4d; background: none; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+    <div id="universo-deseos"></div>
+
+    <a href="index.html" class="btn-volver">⬅</a>
+
+    <div class="ui-container">
+        <h1>Portal de los Deseos ✨</h1>
+        <textarea id="textoDeseo" placeholder="Escribe tu deseo al universo..."></textarea>
+        <button class="btn-lanzar" onclick="enviarDeseo()">Lanzar Deseo 🚀</button>
+        <p class="ver-lista" onclick="toggleAdmin()">Administrar Deseos</p>
+        <div id="admin-panel"></div>
+    </div>
+
+    <script>
+        // CONFIGURACIÓN FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyDccmduaptWiK-3VKRWeU2PR4PBscr-Tmg",
+            authDomain: "webnusitas.firebaseapp.com",
+            projectId: "webnusitas",
+            storageBucket: "webnusitas.firebasestorage.app",
+            messagingSenderId: "509688237934",
+            appId: "1:509688237934:web:2a7af79ebb0a9128b77b7f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // LANZAR DESEO
+        async function enviarDeseo() {
+            const input = document.getElementById('textoDeseo');
+            const mensaje = input.value.trim();
+            if(!mensaje) return;
+
+            await db.collection("muro_deseos").add({
+                mensaje: mensaje,
+                creado: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            input.value = "";
+        }
+
+        // CREAR ESTRELLA FLOTANTE
+        function crearDeseoVisual(texto) {
+            const contenedor = document.getElementById('universo-deseos');
+            const el = document.createElement('div');
+            el.className = 'deseo-flotante';
+            el.innerText = texto;
+
+            // Posiciones aleatorias
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const mX = (Math.random() - 0.5) * 500;
+            const mY = (Math.random() - 0.5) * 500;
+            const dur = Math.random() * 15 + 15;
+
+            el.style.left = x + '%';
+            el.style.top = y + '%';
+            el.style.setProperty('--moveX', mX + 'px');
+            el.style.setProperty('--moveY', mY + 'px');
+            el.style.animationDuration = dur + 's';
+
+            contenedor.appendChild(el);
+            setTimeout(() => el.remove(), dur * 1000);
+        }
+
+        // ESCUCHAR FIREBASE
+        db.collection("muro_deseos").orderBy("creado", "desc").onSnapshot((snap) => {
+            const admin = document.getElementById('admin-panel');
+            admin.innerHTML = "";
+            
+            snap.forEach(doc => {
+                const data = doc.data();
+                crearDeseoVisual(data.mensaje); // Crea el efecto flotante
+                
+                // Añade a la lista de administración
+                admin.innerHTML += `
+                    <div class="admin-item">
+                        <span>${data.mensaje.substring(0,25)}...</span>
+                        <button class="btn-del" onclick="borrarDeseo('${doc.id}')">✕</button>
+                    </div>`;
+            });
+        });
+
+        async function borrarDeseo(id) {
+            if(confirm("¿Eliminar este deseo?")) await db.collection("muro_deseos").doc(id).delete();
+        }
+
+        function toggleAdmin() {
+            const p = document.getElementById('admin-panel');
+            p.style.display = p.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // CONFIGURACIÓN DE ESTRELLAS (Particles.js)
+        particlesJS('particles-js', {
+            "particles": {
+                "number": { "value": 120, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 1, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                "size": { "value": 2, "random": true },
+                "line_linked": { "enable": false },
+                "move": { "enable": true, "speed": 0.5, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+            },
+            "interactivity": {
+                "events": { "onhover": { "enable": true, "mode": "bubble" } },
+                "modes": { "bubble": { "distance": 200, "size": 4, "duration": 2, "opacity": 1 } }
+            }
+        });
+    </script>
+</body>
+</html>

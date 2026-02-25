@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Oráculo de Ari & Josue 🔮</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body { 
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('fondoOraculo.jpg');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #ffffff; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 40px 20px;
+        }
+
+        .btn-volver {
+            position: fixed; top: 20px; left: 20px; color: #00ff80; text-decoration: none;
+            background: rgba(0,0,0,0.7); padding: 10px 15px; border-radius: 10px; border: 1px solid #8a2be2; z-index: 10;
+        }
+
+        h1 { color: #00ff80; text-shadow: 0 0 15px rgba(0, 255, 128, 0.5); margin-bottom: 30px; }
+
+        .grid-decisiones {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; max-width: 1200px; width: 100%;
+        }
+
+        .card-decision {
+            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(5px);
+            border: 2px solid #8a2be2; border-radius: 25px; padding: 20px; text-align: center;
+            transition: 0.3s;
+        }
+
+        @keyframes vibrar {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(1deg); }
+            50% { transform: rotate(-1deg); }
+            75% { transform: rotate(1deg); }
+            100% { transform: rotate(0deg); }
+        }
+        .vibrando { animation: vibrar 0.1s infinite; border-color: #00ff80 !important; }
+
+        .resultado-box {
+            height: 70px; display: flex; align-items: center; justify-content: center;
+            margin: 15px 0; background: rgba(0, 0, 0, 0.6); border-radius: 15px; border: 1px dashed #d896ff;
+        }
+
+        .resultado-texto { font-weight: bold; font-size: 1.1em; color: #00ff80; text-align: center; padding: 5px; }
+
+        .btn-jugar {
+            background: #8a2be2; color: white; border: none; padding: 12px;
+            border-radius: 50px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px;
+        }
+
+        .admin-seccion { margin-top: 10px; padding-top: 10px; border-top: 1px solid #444; }
+
+        input {
+            width: 100%; padding: 10px; border-radius: 10px; border: 1px solid #444;
+            background: rgba(0, 0, 0, 0.8); color: white; margin-bottom: 8px; outline: none;
+        }
+
+        .btn-add { background: #27c93f; color: white; border: none; padding: 8px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
+
+        .btn-ver-lista { background: transparent; color: #aaa; border: none; cursor: pointer; font-size: 0.8em; text-decoration: underline; margin-top: 5px; }
+
+        /* Modal para borrar cosas */
+        .modal-lista {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #1a1a1a; border: 2px solid #8a2be2; border-radius: 20px; padding: 20px;
+            width: 90%; max-width: 400px; z-index: 100; max-height: 80vh; overflow-y: auto;
+        }
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 99; }
+        .item-lista { display: flex; justify-content: space-between; padding: 10px; border-bottom: 1px solid #333; align-items: center; }
+        .btn-borrar-item { color: #ff4d4d; cursor: pointer; font-weight: bold; background: none; border: none; }
+        .cerrar-modal { color: #00ff80; cursor: pointer; float: right; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-volver">⬅ Volver</a>
+    <h1>El Oráculo de Ari & Josue 🔮</h1>
+
+    <div class="grid-decisiones">
+        <div class="card-decision" id="card-peli">
+            <h3>🎬 Películas</h3>
+            <div class="resultado-box"><p id="resultado-peli" class="resultado-texto">¿Qué veremos?</p></div>
+            <button class="btn-jugar" onclick="decidir('peliculas', 'resultado-peli', 'card-peli')">SORTEAR</button>
+            <div class="admin-seccion">
+                <input type="text" id="in-peli" placeholder="Nueva peli...">
+                <button class="btn-add" onclick="guardar('peliculas', 'in-peli')">Añadir</button>
+                <button class="btn-ver-lista" onclick="abrirLista('peliculas')">Ver/Borrar lista</button>
+            </div>
+        </div>
+
+        <div class="card-decision" id="card-plan">
+            <h3>✨ Planes</h3>
+            <div class="resultado-box"><p id="resultado-plan" class="resultado-texto">¿A dónde vamos?</p></div>
+            <button class="btn-jugar" onclick="decidir('planes', 'resultado-plan', 'card-plan')">SORTEAR</button>
+            <div class="admin-seccion">
+                <input type="text" id="in-plan" placeholder="Nuevo plan...">
+                <button class="btn-add" onclick="guardar('planes', 'in-plan')">Añadir</button>
+                <button class="btn-ver-lista" onclick="abrirLista('planes')">Ver/Borrar lista</button>
+            </div>
+        </div>
+
+        <div class="card-decision" id="card-receta">
+            <h3>👨‍🍳 Recetas</h3>
+            <div class="resultado-box"><p id="resultado-receta" class="resultado-texto">¿Qué comemos?</p></div>
+            <button class="btn-jugar" onclick="decidir('recetas', 'resultado-receta', 'card-receta')">SORTEAR</button>
+            <div class="admin-seccion">
+                <input type="text" id="in-receta" placeholder="Nueva receta...">
+                <button class="btn-add" onclick="guardar('recetas', 'in-receta')">Añadir</button>
+                <button class="btn-ver-lista" onclick="abrirLista('recetas')">Ver/Borrar lista</button>
+            </div>
+        </div>
+
+        <div class="card-decision" id="card-canguil">
+            <h3>🍿 ¿Hay Canguil?</h3>
+            <div class="resultado-box"><p id="resultado-canguil" class="resultado-texto">El destino dirá...</p></div>
+            <button class="btn-jugar" style="background: #27c93f;" onclick="decidirLocal('resultado-canguil', 'card-canguil')">CONSULTAR</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="cerrarLista()"></div>
+    <div class="modal-lista" id="modal-lista">
+        <span class="cerrar-modal" onclick="cerrarLista()">CERRAR X</span>
+        <h2 id="titulo-modal" style="color: #8a2be2; margin-bottom: 15px;">Lista</h2>
+        <div id="contenedor-items"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDccmduaptWiK-3VKRWeU2PR4PBscr-Tmg",
+            authDomain: "webnusitas.firebaseapp.com",
+            projectId: "webnusitas",
+            storageBucket: "webnusitas.firebasestorage.app",
+            messagingSenderId: "509688237934",
+            appId: "1:509688237934:web:2a7af79ebb0a9128b77b7f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Guardar
+        window.guardar = async (coleccion, inputId) => {
+            const val = document.getElementById(inputId).value.trim();
+            if(!val) return;
+            await addDoc(collection(db, coleccion), { nombre: val, fecha: new Date() });
+            document.getElementById(inputId).value = "";
+            alert("¡Guardado! ✨");
+        };
+
+        // Decidir Nube
+        window.decidir = async (coleccion, resId, cardId) => {
+            const res = document.getElementById(resId);
+            const card = document.getElementById(cardId);
+            card.classList.add('vibrando');
+            const snap = await getDocs(collection(db, coleccion));
+            let items = [];
+            snap.forEach(d => items.push(d.data().nombre));
+            if(items.length === 0) items = ["¡Añade algo primero!"];
+            
+            let i = 0;
+            const int = setInterval(() => {
+                res.innerText = items[Math.floor(Math.random()*items.length)];
+                if(i++ > 15) { clearInterval(int); card.classList.remove('vibrando'); }
+            }, 80);
+        };
+
+        // Decidir Canguil (Local)
+        window.decidirLocal = (resId, cardId) => {
+            const res = document.getElementById(resId);
+            const card = document.getElementById(cardId);
+            const ops = ["¡SÍ! ❤️", "Hoy no... 😢", "Solo si Josue cocina 👨‍🍳", "¡OBVIO! 🍿"];
+            card.classList.add('vibrando');
+            let i = 0;
+            const int = setInterval(() => {
+                res.innerText = ops[Math.floor(Math.random()*ops.length)];
+                if(i++ > 15) { clearInterval(int); card.classList.remove('vibrando'); }
+            }, 80);
+        };
+
+        // Manejo de Listas
+        let coleccionActual = "";
+        window.abrirLista = async (col) => {
+            coleccionActual = col;
+            document.getElementById('titulo-modal').innerText = "Editar " + col.toUpperCase();
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('modal-lista').style.display = 'block';
+            await refrescarLista();
+        };
+
+        async function refrescarLista() {
+            const contenedor = document.getElementById('contenedor-items');
+            contenedor.innerHTML = "Cargando...";
+            const snap = await getDocs(collection(db, coleccionActual));
+            contenedor.innerHTML = "";
+            snap.forEach(d => {
+                const div = document.createElement('div');
+                div.className = 'item-lista';
+                div.innerHTML = `<span>${d.data().nombre}</span><button class="btn-borrar-item" onclick="borrarItem('${d.id}')">Eliminar</button>`;
+                contenedor.appendChild(div);
+            });
+        }
+
+        window.borrarItem = async (id) => {
+            if(confirm("¿Ya lo hicieron o lo borro?")) {
+                await deleteDoc(doc(db, coleccionActual, id));
+                refrescarLista();
+            }
+        };
+
+        window.cerrarLista = () => {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('modal-lista').style.display = 'none';
+        };
+    </script>
+</body>
+</html>
