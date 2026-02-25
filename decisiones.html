@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Oráculo de Ari & Josue 🔮</title>
+    <title> A & J 🔮</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
 
@@ -78,45 +78,45 @@
 <body>
 
     <a href="index.html" class="btn-volver">⬅ Volver</a>
-    <h1>El Oráculo de Ari & Josue 🔮</h1>
+    <h1> Ari & Josue 🔮</h1>
 
     <div class="grid-decisiones">
         <div class="card-decision" id="card-peli">
-            <h3>🎬 Películas</h3>
-            <div class="resultado-box"><p id="resultado-peli" class="resultado-texto">¿Qué veremos?</p></div>
+            <h3>🎬 Pelísss</h3>
+            <div class="resultado-box"><p id="resultado-peli" class="resultado-texto"> hay vamos a ver?</p></div>
             <button class="btn-jugar" onclick="decidir('peliculas', 'resultado-peli', 'card-peli')">SORTEAR</button>
             <div class="admin-seccion">
-                <input type="text" id="in-peli" placeholder="Nueva peli...">
+                <input type="text" id="in-peli" placeholder="Nueva pelix">
                 <button class="btn-add" onclick="guardar('peliculas', 'in-peli')">Añadir</button>
-                <button class="btn-ver-lista" onclick="abrirLista('peliculas')">Ver/Borrar lista</button>
+                <button class="btn-ver-lista" onclick="abrirLista('peliculas')">Ver / Borrar lista</button>
             </div>
         </div>
 
         <div class="card-decision" id="card-plan">
-            <h3>✨ Planes</h3>
-            <div class="resultado-box"><p id="resultado-plan" class="resultado-texto">¿A dónde vamos?</p></div>
+            <h3>✨ Planesss</h3>
+            <div class="resultado-box"><p id="resultado-plan" class="resultado-texto">que hacemoss?</p></div>
             <button class="btn-jugar" onclick="decidir('planes', 'resultado-plan', 'card-plan')">SORTEAR</button>
             <div class="admin-seccion">
-                <input type="text" id="in-plan" placeholder="Nuevo plan...">
+                <input type="text" id="in-plan" placeholder="Nuevo plan">
                 <button class="btn-add" onclick="guardar('planes', 'in-plan')">Añadir</button>
-                <button class="btn-ver-lista" onclick="abrirLista('planes')">Ver/Borrar lista</button>
+                <button class="btn-ver-lista" onclick="abrirLista('planes')">Ver / Borrar lista</button>
             </div>
         </div>
 
         <div class="card-decision" id="card-receta">
             <h3>👨‍🍳 Recetas</h3>
-            <div class="resultado-box"><p id="resultado-receta" class="resultado-texto">¿Qué comemos?</p></div>
+            <div class="resultado-box"><p id="resultado-receta" class="resultado-texto">¿Qué preparamos? jiji</p></div>
             <button class="btn-jugar" onclick="decidir('recetas', 'resultado-receta', 'card-receta')">SORTEAR</button>
             <div class="admin-seccion">
-                <input type="text" id="in-receta" placeholder="Nueva receta...">
+                <input type="text" id="in-receta" placeholder="Nueva receta">
                 <button class="btn-add" onclick="guardar('recetas', 'in-receta')">Añadir</button>
-                <button class="btn-ver-lista" onclick="abrirLista('recetas')">Ver/Borrar lista</button>
+                <button class="btn-ver-lista" onclick="abrirLista('recetas')">Ver / Borrar lista</button>
             </div>
         </div>
 
         <div class="card-decision" id="card-canguil">
-            <h3>🍿 ¿Hay Canguil?</h3>
-            <div class="resultado-box"><p id="resultado-canguil" class="resultado-texto">El destino dirá...</p></div>
+            <h3>🍿 Hay Canguilcito?</h3>
+            <div class="resultado-box"><p id="resultado-canguil" class="resultado-texto"></p></div>
             <button class="btn-jugar" style="background: #27c93f;" onclick="decidirLocal('resultado-canguil', 'card-canguil')">CONSULTAR</button>
         </div>
     </div>
@@ -174,7 +174,7 @@
         window.decidirLocal = (resId, cardId) => {
             const res = document.getElementById(resId);
             const card = document.getElementById(cardId);
-            const ops = ["¡SÍ! ❤️", "Hoy no... 😢", "Solo si Josue cocina 👨‍🍳", "¡OBVIO! 🍿"];
+            const ops = ["sisisiis", "Hoy no ;(", "Solo si Josuecitooo prepara 👨‍🍳", "sí, muevete 🍿"];
             card.classList.add('vibrando');
             let i = 0;
             const int = setInterval(() => {
