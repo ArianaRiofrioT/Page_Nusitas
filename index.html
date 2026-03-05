@@ -1,91 +1,230 @@
+*INDEX ANTIGUO*
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuestro Universo ❤️</title>
+    <title>J & A 💜</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #0d0d0d; color: white; overflow-x: hidden; text-align: center; }
 
-        /* --- CAPA DE MANTENIMIENTO (EL BLOQUEO) --- */
-        #capa-mantenimiento {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; color: #ff007f; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 999999; /* Por encima de todo */
+        body { 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; 
+            text-align: center;
+            padding: 40px 20px;
+            transition: background 1.5s ease-in-out;
         }
-        #capa-mantenimiento h1 { font-size: 3.5rem; text-shadow: 0 0 20px #ff007f; margin: 0; }
-        #capa-mantenimiento p { color: #333; margin-top: 15px; font-style: italic; }
 
-        /* --- ESTILOS ORIGINALES (TODO SIGUE AQUÍ) --- */
-        .header { padding: 60px 20px; background: linear-gradient(to bottom, #1a1a1a, #0d0d0d); }
-        h2 { color: #00ff80; font-size: 2.5em; text-shadow: 0 0 10px rgba(0, 255, 128, 0.3); }
-
-        .contador-container { margin: 40px auto; padding: 20px; max-width: 600px; border: 2px solid #8a2be2; border-radius: 20px; background: rgba(138, 43, 226, 0.05); }
-        .grid-botones { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; padding: 20px; max-width: 800px; margin: 0 auto; }
-        
-        .btn-seccion {
-            background: #1a1a1a; border: 2px solid #8a2be2; color: white; padding: 20px;
-            border-radius: 15px; text-decoration: none; font-weight: bold; transition: 0.3s;
+        /* --- FONDOS DINÁMICOS --- */
+        .modo-dia {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.6)), url('fondoDia.jpg');
         }
-        .btn-seccion:hover { background: #8a2be2; transform: scale(1.05); box-shadow: 0 0 15px #8a2be2; }
 
-        /* Corazones flotantes */
-        .corazon { position: fixed; bottom: -50px; color: #ff007f; animation: flotar 6s linear infinite; opacity: 0.5; z-index: -1; }
-        @keyframes flotar {
-            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        .modo-noche {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('fondoNoche.jpg');
+        }
+
+        /* --- CONTENEDOR ESTILO CRISTAL OSCURO --- */
+        .container {
+            padding: 30px;
+            background: rgba(10, 10, 10, 0.75);
+            border-radius: 30px;
+            backdrop-filter: blur(12px);
+            border: 2px solid #8a2be2;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.5);
+            color: #ffffff;
+            transition: transform 0.3s;
+        }
+
+        h1 { 
+            font-size: 3.5em; 
+            margin-bottom: 10px; 
+            color: #00ff80; 
+            text-shadow: 0 0 20px rgba(0, 255, 128, 0.8); 
+        }
+
+        p.intro { 
+            font-size: 1.2em; 
+            margin-bottom: 30px; 
+            font-style: italic; 
+            color: #d896ff; 
+            text-shadow: 0 0 10px rgba(216, 150, 255, 0.5);
+        }
+
+        /* --- MENÚ DE BOTONES --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-menu {
+            padding: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #ffffff;
+            border: 2px solid #8a2be2;
+            border-radius: 15px;
+            transition: 0.3s;
+            background: rgba(20, 20, 20, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Botón especial para el Portal de Deseos (ocupa toda la fila) */
+        .btn-deseos {
+            grid-column: 1 / -1;
+            border-color: #00ff80;
+            color: #00ff80;
+            background: rgba(0, 255, 128, 0.1);
+            font-size: 1.1em;
+            letter-spacing: 1px;
+        }
+
+        .btn-menu:hover {
+            border-color: #00ff80;
+            color: #00ff80;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 128, 0.5);
+        }
+
+        /* --- CONTADOR --- */
+        .contador-container {
+            margin-top: 20px;
+            padding: 20px;
+            border-top: 1px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .contador-titulo {
+            color: #00ff80;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 128, 0.5);
+        }
+
+        #reloj {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tiempo-box {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px 10px;
+            border-radius: 15px;
+            min-width: 75px;
+            border: 1px solid #8a2be2;
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.3);
+        }
+
+        .tiempo-box span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: #00ff80;
+            text-shadow: 0 0 15px rgba(0, 255, 128, 0.6);
+        }
+
+        .tiempo-box p {
+            font-size: 0.7em;
+            color: #d896ff;
+            text-transform: uppercase;
+            margin-top: 5px;
         }
     </style>
 </head>
-<body>
+<body id="main-body">
 
-    <div id="capa-mantenimiento">
-        <h1>ya no existe 🖕</h1>
-        <p></p>
-    </div>
+    <div class="container">
+        <h1>Nusitas 💜</h1>
+        <p class="intro"> Nuestra historia en un solo lugar</p>
 
-    <div class="header">
-        <h2>Para mi Nusita favorita ❤️</h2>
-    </div>
+        <div class="menu-grid">
+            <a href="galeria.html" class="btn-menu">📸 Nuestras Fotitos</a>
+            <a href="canciones.html" class="btn-menu">🎧 Playlist</a>
+            <a href="decisiones.html" class="btn-menu">🔮 Hoy toca?</a> 
+            <a href="lugares.html" class="btn-menu">📍 Lugares</a>
+            
+            <a href="deseos.html" class="btn-menu btn-deseos">✨ Nuestros Deseos ✨</a>
+        </div>
 
-    <div class="contador-container">
-        <div id="reloj">Cargando tiempo juntos...</div>
-    </div>
-
-    <div class="grid-botones">
-        <a href="galeria.html" class="btn-seccion">📸 Galería</a>
-        <a href="lugares.html" class="btn-seccion">📍 Lugares</a>
-        <a href="oraculo.html" class="btn-seccion">🔮 Oráculo</a>
-        <a href="deseos.html" class="btn-seccion">✨ Deseos</a>
+        <div class="contador-container">
+            <p class="contador-titulo">Tiempo Juntitosss ✨</p>
+            <div id="reloj">
+                <div class="tiempo-box">
+                    <span id="dias">00</span>
+                    <p>Días</p>
+                </div>
+                <div class="tiempo-box">
+                    <span id="horas">00</span>
+                    <p>Hrs</p>
+                </div>
+                <div class="tiempo-box">
+                    <span id="minutos">00</span>
+                    <p>Min</p>
+                </div>
+                <div class="tiempo-box">
+                    <span id="segundos">00</span>
+                    <p>Seg</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // SCRIPT DEL CONTADOR (TU ORIGINAL)
-        const fechaInicio = new Date("2023-11-20T00:00:00").getTime(); // Cambia a tu fecha real
-        setInterval(() => {
-            const ahora = new Date().getTime();
-            const diff = ahora - fechaInicio;
-            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((diff % (1000 * 60)) / 1000);
-            document.getElementById("reloj").innerHTML = `${d}d ${h}h ${m}m ${s}s`;
-        }, 1000);
-
-        // CORAZONES FLOTANTES
-        function crearCorazon() {
-            const c = document.createElement("div");
-            c.className = "corazon";
-            c.innerHTML = "❤️";
-            c.style.left = Math.random() * 100 + "vw";
-            c.style.fontSize = Math.random() * 20 + 10 + "px";
-            c.style.animationDuration = Math.random() * 3 + 3 + "s";
-            document.body.appendChild(c);
-            setTimeout(() => c.remove(), 6000);
+        // --- LOGICA DE HORARIO (Día/Noche) ---
+        function actualizarAmbiente() {
+            const hora = new Date().getHours();
+            const body = document.getElementById('main-body');
+            
+            // Día: 6 AM a 6 PM
+            if (hora >= 6 && hora < 18) {
+                body.className = "modo-dia";
+            } else {
+                body.className = "modo-noche";
+            }
         }
-        setInterval(crearCorazon, 300);
+        
+        actualizarAmbiente();
+        setInterval(actualizarAmbiente, 60000);
+
+        // --- LÓGICA DEL CONTADOR (Iniciado el 23 de Julio de 2024) ---
+        const fechaInicio = new Date(2024, 6, 23, 0, 0, 0); 
+
+        function actualizarContador() {
+            const ahora = new Date();
+            const diferencia = ahora - fechaInicio;
+
+            const d = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+            document.getElementById('dias').innerText = d;
+            document.getElementById('horas').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutos').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('segundos').innerText = s < 10 ? '0' + s : s;
+        }
+
+        setInterval(actualizarContador, 1000);
+        actualizarContador();
     </script>
 </body>
 </html>
